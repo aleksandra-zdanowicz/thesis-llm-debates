@@ -1,6 +1,6 @@
 import ollama
 from prompts import STANCES, PERSONALITIES, ROLES, GUIDELINES
-
+AGENT_MODEL = "llama3.2"
 
 class DebateAgent:
     def __init__(self, stance: str, personality: str):
@@ -48,13 +48,12 @@ Now deliver your opening statement."""
         })
 
         # Call Ollama
-        response = ollama.chat(
-            model="llama3.2",
-            messages=[
-                {"role": "system", "content": system_prompt},
-                *self.conversation_history
-            ]
-        )
+        judge_response = ollama.chat(
+        model=JUDGE_MODEL,
+        messages=[
+        {"role": "user", "content": judge_prompt}
+    ]
+)
 
         reply = response["message"]["content"]
 
