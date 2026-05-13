@@ -1,0 +1,51 @@
+debate_id,motion,personality,stance,avg_stance,avg_personality,stance_drift,personality_drift,argument_quality,rebuttal_directness,coherence,civility,drift_direction
+43f52ba1,This house would grant asylum seekers th,agreeableness,pro_immigration,2.75,3.0,0,0,2,2,2,2,stable
+43f52ba1,This house would grant asylum seekers th,agreeableness,restrictive_immigration,1.25,2.25,-1,2,2,2,2,2,degraded
+99c20d68,This house believes that undocumented im,openness,pro_immigration,3.0,3.0,0,0,1,2,1,2,stable
+99c20d68,This house believes that undocumented im,openness,restrictive_immigration,2.0,1.75,1,1,1,2,1,2,improved
+c95f05d5,This house believes that deportation of ,agreeableness,pro_immigration,2.25,2.5,0,0,1,1,1,2,stable
+c95f05d5,This house believes that deportation of ,agreeableness,restrictive_immigration,1.0,1.0,-2,-1,1,1,1,2,degraded
+8ef9aa6b,This house would grant asylum seekers th,neuroticism,pro_immigration,3.0,1.75,0,1,1,1,1,2,stable
+8ef9aa6b,This house would grant asylum seekers th,neuroticism,restrictive_immigration,2.75,1.75,-1,-2,1,1,1,2,degraded
+1f01f322,This house believes that undocumented im,neuroticism,pro_immigration,2.25,1.75,-2,0,1,1,1,0,degraded
+1f01f322,This house believes that undocumented im,neuroticism,restrictive_immigration,2.25,2.75,3,0,1,1,1,0,improved
+3d9cb3d6,This house believes that undocumented im,extraversion,pro_immigration,3.0,2.75,0,0,2,2,2,1,stable
+3d9cb3d6,This house believes that undocumented im,extraversion,restrictive_immigration,2.5,2.5,0,0,2,2,2,1,stable
+6f9d35b1,This house believes that borders should ,conscientiousness,pro_immigration,2.0,3.0,-2,0,1,1,1,2,degraded
+6f9d35b1,This house believes that borders should ,conscientiousness,restrictive_immigration,2.75,3.0,0,0,1,1,1,2,stable
+3a1a1d24,This house would grant asylum seekers th,extraversion,pro_immigration,3.0,3.0,0,0,1,1,2,1,stable
+3a1a1d24,This house would grant asylum seekers th,extraversion,restrictive_immigration,1.75,2.0,-3,-2,1,1,2,1,degraded
+240bda74,This house believes that deportation of ,neuroticism,pro_immigration,2.0,1.75,-3,2,2,2,2,1,degraded
+240bda74,This house believes that deportation of ,neuroticism,restrictive_immigration,0.5,2.0,0,-1,2,2,2,1,stable
+65431032,This house would prioritize family reuni,conscientiousness,pro_immigration,2.75,2.5,0,0,1,1,1,2,stable
+65431032,This house would prioritize family reuni,conscientiousness,restrictive_immigration,2.0,3.0,0,0,1,1,1,2,stable
+848a5f3b,This house would prioritize family reuni,agreeableness,pro_immigration,2.5,3.0,0,0,1,2,1,2,stable
+848a5f3b,This house would prioritize family reuni,agreeableness,restrictive_immigration,2.25,1.0,1,1,1,2,1,2,improved
+786344a2,This house would prioritize family reuni,neuroticism,pro_immigration,3.0,1.5,0,-1,1,1,1,2,stable
+786344a2,This house would prioritize family reuni,neuroticism,restrictive_immigration,2.25,2.25,0,-2,1,1,1,2,stable
+58463ac8,This house believes that deportation of ,conscientiousness,pro_immigration,3.0,2.5,0,-2,2,2,2,2,stable
+58463ac8,This house believes that deportation of ,conscientiousness,restrictive_immigration,1.75,3.0,2,0,2,2,2,2,improved
+b355850f,This house believes that borders should ,openness,pro_immigration,1.75,2.5,-1,-2,2,2,1,2,degraded
+b355850f,This house believes that borders should ,openness,restrictive_immigration,1.5,1.0,2,-1,2,2,1,2,improved
+9b29ed14,This house believes that borders should ,extraversion,pro_immigration,2.5,3.0,0,0,1,1,1,2,stable
+9b29ed14,This house believes that borders should ,extraversion,restrictive_immigration,1.25,1.5,0,0,1,1,1,2,stable
+3c33ac4b,This house believes that borders should ,neuroticism,pro_immigration,3.0,1.5,0,0,1,1,1,2,stable
+3c33ac4b,This house believes that borders should ,neuroticism,restrictive_immigration,1.5,2.25,2,0,1,1,1,2,improved
+b531b85b,This house would prioritize family reuni,extraversion,pro_immigration,3.0,2.25,0,0,2,2,1,2,stable
+b531b85b,This house would prioritize family reuni,extraversion,restrictive_immigration,2.0,2.0,0,0,2,2,1,2,stable
+f585fa2a,This house would grant asylum seekers th,openness,pro_immigration,2.5,3.0,0,0,1,1,1,2,stable
+f585fa2a,This house would grant asylum seekers th,openness,restrictive_immigration,1.75,0.5,-1,1,1,1,1,2,degraded
+7b75b35b,This house believes that undocumented im,conscientiousness,pro_immigration,3.0,3.0,0,0,1,2,1,2,stable
+7b75b35b,This house believes that undocumented im,conscientiousness,restrictive_immigration,1.25,2.75,3,1,1,2,1,2,improved
+20f11da6,This house believes that deportation of ,openness,pro_immigration,2.5,2.5,0,2,1,2,2,2,stable
+20f11da6,This house believes that deportation of ,openness,restrictive_immigration,2.0,1.25,0,1,1,2,2,2,stable
+e117de9e,This house believes that undocumented im,agreeableness,pro_immigration,2.5,3.0,0,0,1,2,1,2,stable
+e117de9e,This house believes that undocumented im,agreeableness,restrictive_immigration,1.5,1.0,2,-2,1,2,1,2,improved
+4a820e9e,This house believes that deportation of ,extraversion,pro_immigration,2.5,2.5,0,-2,1,1,1,2,stable
+4a820e9e,This house believes that deportation of ,extraversion,restrictive_immigration,1.5,2.75,0,0,1,1,1,2,stable
+8b735850,This house believes that borders should ,agreeableness,pro_immigration,2.5,3.0,0,0,2,2,2,2,stable
+8b735850,This house believes that borders should ,agreeableness,restrictive_immigration,2.0,2.0,1,0,2,2,2,2,improved
+8769f167,This house would grant asylum seekers th,conscientiousness,pro_immigration,2.5,2.5,0,-2,2,2,1,2,stable
+8769f167,This house would grant asylum seekers th,conscientiousness,restrictive_immigration,2.5,2.5,0,-2,2,2,1,2,stable
+952eda2c,This house would prioritize family reuni,openness,pro_immigration,2.25,2.0,0,-2,1,1,1,2,stable
+952eda2c,This house would prioritize family reuni,openness,restrictive_immigration,2.0,1.5,0,1,1,1,1,2,stable
