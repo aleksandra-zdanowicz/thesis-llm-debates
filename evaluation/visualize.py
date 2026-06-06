@@ -339,29 +339,67 @@ def plot_drift_direction_counts(df):
 
 
 def plot_scatter_stance_vs_personality(df):
-    """Scatter plot: stance consistency vs personality adherence."""
-    fig, ax = plt.subplots(figsize=(9, 7))
+    """Scatter plot: stance consistency vs personality adherence, colored by personality trait."""
+    fig, ax = plt.subplots(figsize=(11, 8))
 
-    for stance, color, label in [
-        ("pro_immigration", COLORS["pro_immigration"], "Pro-Immigration"),
-        ("restrictive_immigration", COLORS["restrictive_immigration"], "Restrictive")
-    ]:
-        subset = df[df["stance"] == stance]
-        for _, row in subset.iterrows():
-            ax.scatter(row["avg_stance"], row["avg_personality"],
-                      color=color, alpha=0.6, s=80)
-            ax.annotate(row["personality"][:3].upper(),
-                       (row["avg_stance"], row["avg_personality"]),
-                       textcoords="offset points", xytext=(5, 3),
-                       fontsize=7, color=color)
+    PERSONALITY_COLORS = {
+        "agreeableness": "#4CAF50",
+        "conscientiousness": "#2196F3",
+        "extraversion": "#FF9800",
+        "neuroticism": "#E91E63",
+        "openness": "#9C27B0"
+    }
 
-    pro_patch = mpatches.Patch(color=COLORS["pro_immigration"], label="Pro-Immigration")
-    res_patch = mpatches.Patch(color=COLORS["restrictive_immigration"], label="Restrictive")
-    ax.legend(handles=[pro_patch, res_patch])
+    PERSONALITY_MARKERS = {
+        "pro_immigration": "o",
+        "restrictive_immigration": "s"
+    }
+
+    for _, row in df.iterrows():
+        color = PERSONALITY_COLORS[row["personality"]]
+        marker = PERSONALITY_MARKERS[row["stance"]]
+        ax.scatter(
+            row["avg_stance"],
+            row["avg_personality"],
+            color=color,
+            marker=marker,
+            alpha=0.75,
+            s=100,
+            edgecolors="white",
+            linewidths=0.5
+        )
+
+    # Legend for personality traits
+    personality_handles = [
+        mpatches.Patch(color=color, label=p.capitalize())
+        for p, color in PERSONALITY_COLORS.items()
+    ]
+
+    # Legend for stance (marker shape)
+    stance_handles = [
+        plt.scatter([], [], marker="o", color="gray", alpha=0.75, s=80, label="Pro-Immigration"),
+        plt.scatter([], [], marker="s", color="gray", alpha=0.75, s=80, label="Restrictive"),
+    ]
+
+    first_legend = ax.legend(
+        handles=personality_handles,
+        title="Personality Trait",
+        loc="upper left",
+        fontsize=9,
+        title_fontsize=10
+    )
+    ax.add_artist(first_legend)
+    ax.legend(
+        handles=stance_handles,
+        title="Stance",
+        loc="lower right",
+        fontsize=9,
+        title_fontsize=10
+    )
 
     ax.set_xlabel("Average Stance Score (0-3)", fontsize=12)
     ax.set_ylabel("Average Personality Score (0-3)", fontsize=12)
-    ax.set_title("Stance Consistency vs Personality Adherence", fontsize=13)
+    ax.set_title("Stance Consistency vs Personality Adherence\n(color = personality trait, shape = stance)", fontsize=13)
     ax.set_xlim(0, 3.5)
     ax.set_ylim(0, 3.5)
     ax.grid(alpha=0.3)

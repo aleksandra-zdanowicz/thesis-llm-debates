@@ -1,7 +1,7 @@
 import ollama
 from prompts import STANCES, PERSONALITIES, ROLES, GUIDELINES
 
-AGENT_MODEL = "llama3.2"
+AGENT_MODEL = "qwen2.5"
 
 class DebateAgent:
     def __init__(self, stance: str, personality: str):
