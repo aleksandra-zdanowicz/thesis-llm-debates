@@ -18,12 +18,12 @@ def build_validation_system_prompt(stance: str, personality: str) -> str:
 {GUIDELINES}"""
 
 
-def probe_agent(stance: str, personality: str, question: str) -> str:
+def probe_agent(stance: str, personality: str, question: str, agent_model: str = AGENT_MODEL) -> str:
     """Send a single probe question to an agent and return its response."""
     system_prompt = build_validation_system_prompt(stance, personality)
 
     response = ollama.chat(
-        model="llama3.2",
+        model=agent_model,
         messages=[
             {"role": "system", "content": system_prompt},
             {"role": "user", "content": question}
@@ -149,14 +149,14 @@ Answer with ONLY a JSON object in this exact format with no extra text:
     return result
 
 
-def validate_condition(stance: str, personality: str) -> dict:
+def validate_condition(stance: str, personality: str, agent_model: str = AGENT_MODEL) -> dict:
     """
     Run full validation for one agent condition.
     Returns a validation report.
     """
 
     print(f"\n{'='*60}")
-    print(f"Validating: {stance} + {personality}")
+    print(f"Validating: {stance} + {personality} [{agent_model}]")
     print(f"{'='*60}")
 
     stance_results = []
@@ -166,7 +166,7 @@ def validate_condition(stance: str, personality: str) -> dict:
     print("\n-- Stance probes --")
     for i, question in enumerate(STANCE_PROBES):
         print(f"  Q{i+1}: {question}")
-        response = probe_agent(stance, personality, question)
+        response = probe_agent(stance, personality, question, agent_model)
         score = score_stance(response, stance)
         stance_results.append({
             "question": question,
@@ -180,7 +180,7 @@ def validate_condition(stance: str, personality: str) -> dict:
     print("\n-- Personality probes --")
     for i, question in enumerate(PERSONALITY_PROBES):
         print(f"  Q{i+1}: {question}")
-        response = probe_agent(stance, personality, question)
+        response = probe_agent(stance, personality, question, agent_model)
         score = score_personality(response, personality)
         personality_results.append({
             "question": question,
@@ -207,6 +207,7 @@ def validate_condition(stance: str, personality: str) -> dict:
     print(f"  Overall:     {'PASS ✓' if passed else 'FAIL ✗'}")
 
     report = {
+        "model": agent_model,
         "stance": stance,
         "personality": personality,
         "timestamp": datetime.now().isoformat(),
@@ -224,43 +225,49 @@ def validate_condition(stance: str, personality: str) -> dict:
     return report
 
 
-def run_all_validations():
-    """Validate all 10 conditions before running debates."""
+def run_all_validations(agent_model: str = AGENT_MODEL):
+    """Validate all 10 conditions for the given agent model."""
     from debate.config import STANCES_LIST, PERSONALITIES_LIST
 
-    os.makedirs(VALIDATION_OUTPUT_DIR, exist_ok=True)
+    model_tag = agent_model.replace(":", "_").replace(".", "_")
+    output_dir = f"{VALIDATION_OUTPUT_DIR}/{model_tag}"
+    os.makedirs(output_dir, exist_ok=True)
 
     all_reports = []
     failed_conditions = []
 
     for stance in STANCES_LIST:
         for personality in PERSONALITIES_LIST:
-            report = validate_condition(stance, personality)
+            report = validate_condition(stance, personality, agent_model)
             all_reports.append(report)
 
             if not report["summary"]["passed"]:
                 failed_conditions.append(f"{stance} + {personality}")
 
-            # Save individual report
-            filename = f"{VALIDATION_OUTPUT_DIR}/{stance}_{personality}.json"
+            filename = f"{output_dir}/{stance}_{personality}.json"
             with open(filename, "w") as f:
                 json.dump(report, f, indent=2)
 
-    # Final summary
     print(f"\n{'='*60}")
-    print(f"VALIDATION COMPLETE")
+    print(f"VALIDATION COMPLETE — {agent_model}")
     print(f"{'='*60}")
     print(f"Conditions passed: {len(all_reports) - len(failed_conditions)}/{len(all_reports)}")
 
     if failed_conditions:
-        print(f"\nFailed conditions (do not run debates for these):")
+        print(f"\nFailed conditions:")
         for c in failed_conditions:
             print(f"  ✗ {c}")
     else:
         print("\nAll conditions passed — safe to run debates.")
 
+    combined_path = f"{output_dir}/all_validations.json"
+    with open(combined_path, "w") as f:
+        json.dump(all_reports, f, indent=2)
+
     return all_reports, failed_conditions
 
 
 if __name__ == "__main__":
-    run_all_validations()
+    import sys
+    model = sys.argv[1] if len(sys.argv) > 1 else AGENT_MODEL
+    run_all_validations(model)
