@@ -1,6 +1,18 @@
 import json
 import os
+import sys
 from datetime import datetime
+
+# When this file is executed as a script, Python's import path is set to the
+# script's directory (evaluation/) which prevents sibling packages (like
+# `prompts`) from being found. Add the project root to `sys.path` so
+# `python evaluation/validator.py` works from the repository root.
+if __package__ is None:
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    project_root = os.path.abspath(os.path.join(current_dir, ".."))
+    if project_root not in sys.path:
+        sys.path.insert(0, project_root)
+
 import ollama
 from prompts import STANCES, PERSONALITIES, GUIDELINES
 from evaluation.questions import STANCE_PROBES, PERSONALITY_PROBES
@@ -225,8 +237,11 @@ def validate_condition(stance: str, personality: str, agent_model: str = AGENT_M
     return report
 
 
-def run_all_validations(agent_model: str = AGENT_MODEL):
-    """Validate all 10 conditions for the given agent model."""
+def run_all_validations(agent_model: str = AGENT_MODEL, stance_filter=None):
+    """Validate all conditions for the given agent model.
+
+    If `stance_filter` is provided, only that stance will be validated.
+    """
     from debate.config import STANCES_LIST, PERSONALITIES_LIST
 
     model_tag = agent_model.replace(":", "_").replace(".", "_")
@@ -236,7 +251,15 @@ def run_all_validations(agent_model: str = AGENT_MODEL):
     all_reports = []
     failed_conditions = []
 
-    for stance in STANCES_LIST:
+    if stance_filter:
+        if stance_filter not in STANCES_LIST:
+            print(f"Warning: stance '{stance_filter}' not found. Available: {STANCES_LIST}")
+            return all_reports, [f"invalid stance: {stance_filter}"]
+        stances_to_run = [stance_filter]
+    else:
+        stances_to_run = STANCES_LIST
+
+    for stance in stances_to_run:
         for personality in PERSONALITIES_LIST:
             report = validate_condition(stance, personality, agent_model)
             all_reports.append(report)
@@ -269,5 +292,25 @@ def run_all_validations(agent_model: str = AGENT_MODEL):
 
 if __name__ == "__main__":
     import sys
-    model = sys.argv[1] if len(sys.argv) > 1 else AGENT_MODEL
-    run_all_validations(model)
+    # CLI usage:
+    #  - `python evaluation/validator.py`                         -> default model, all stances
+    #  - `python evaluation/validator.py <model>`                 -> run all stances with given model
+    #  - `python evaluation/validator.py <model> <stance>`        -> run only that stance with given model
+    #  - `python evaluation/validator.py <stance>`                -> run only that stance with default model
+    if len(sys.argv) > 2:
+        model = sys.argv[1]
+        stance = sys.argv[2]
+    elif len(sys.argv) > 1:
+        arg = sys.argv[1]
+        from debate.config import STANCES_LIST
+        if arg in STANCES_LIST:
+            model = AGENT_MODEL
+            stance = arg
+        else:
+            model = arg
+            stance = None
+    else:
+        model = AGENT_MODEL
+        stance = None
+
+    run_all_validations(model, stance)
